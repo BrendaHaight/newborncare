@@ -1,138 +1,96 @@
 import Navbar from "./navbar";
+import IonIcon from "@reacticons/ionicons";
 import { useState } from "react";
 
 // Define the structure of a review
-interface ReviewPage {
+interface Review {
   name: string;
   rating: number;
-  reviewText: string;
+  review: string;
+  date: string;
+  initial: string;
+  bgColor: string;
 }
 
-function Review() {
+const ReviewPage: React.FC = () => {
+  const [reviews, setReviews] = useState<Review[]>([
+    {
+      name: "Sarah Johnson",
+      rating: 5,
+      review:
+        "Elaine was a lifesaver! Her advice on sleep training helped our baby sleep training helped our baby sleep through the night in just a few weeks.",
+      date: "Sep 21, 2023",
+      initial: "S",
+      bgColor: "bg-tealish",
+    },
+    {
+      name: "Emily Roberts",
+      rating: 4.5,
+      review:
+        "Elaine's care amd guidance were incredible. As first-time parents, we felt so reassured by her support. ",
+      date: "Oct 5, 2023",
+      initial: "E",
+      bgColor: "bg-pinkish",
+    },
+  ]);
+
   const [name, setName] = useState<string>("");
   const [rating, setRating] = useState<number | "">("");
-  const [reviewText, setReviewText] = useState<string>("");
-  const [reviews, setReviews] = useState<ReviewPage[]>([]);
+  const [review, setReview] = useState<string>("");
+  const [searchTerm, setSerchTerm] = useState<string>("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    console.log("Form submitted"); // Check if submit function is triggered
-    console.log({ name, rating, reviewText }); // Check if form inputs are captured correctly
-
-    if (!name || !rating || !reviewText) {
-      alert("Please fill out all fields!");
+    if (!name || !rating || !review) {
+      alert("Please fill out all fields");
       return;
     }
+    // Get the current date
+    const date = new Date().toLocaleDateString();
 
-    // Add new review to the list of reviews
-    const newReview = { name, rating: Number(rating), reviewText };
-
-    // Add new review to the reviews array
+    // Create a new review object
+    const newReview: Review = {
+      name,
+      rating: Number(rating),
+      review: review,
+      date,
+      initial: name[0],
+      bgColor: name[0] === "A" ? "bg-yellowish" : "bg-tealish",
+    };
+    // Add the new review to the existing reviews
     setReviews([...reviews, newReview]);
 
-    // Clear form inputs
+    // Clear the form
     setName("");
     setRating("");
-    setReviewText("");
+    setReview("");
   };
 
   return (
-    <>
+    <div className="min-h-screen bg-pinkish bg-background-jpeg bg-no-repeat bg-cover">
       <Navbar />
+      <div className="flex justify-center items-center min-h-screen p-10">
+        <div className="md:w-3/5 w-3-4 px-10 flex-col gap-2 p-5 bg-gray-700 bg-opacity-80 text-yellowish rounded-lg">
+          <h1 className="py-5 text-lg">Reviews</h1>
 
-      <div className="flex flex-col min-h-screen w-full bg-pinkish bg-background-jpeg bg-no-repeat bg-cover ">
-        <div className="pt-[80px] flex-grow">
-          <h2 className="text-3xl text-tealish font-bold text-center mt-8">
-            Reviews
-          </h2>
-
-          <form
-            onSubmit={handleSubmit}
-            className="max-w-md mx-auto p-4 bg-transparent shadow-md rounded mt-6"
-          >
-            <div className="mb-4">
-              <label
-                className="block text-sm text-yellowish font-bold mb-2"
-                htmlFor="name"
-              >
-                Name
-              </label>
-              <input
-                type="text"
-                id="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="w-full px-3 py-2 border rounded"
-                required
-              />
-            </div>
-
-            <div className="mb-4">
-              <label
-                className="block text-sm text-yellowish font-bold mb-2"
-                htmlFor="rating"
-              >
-                Rating
-              </label>
-              <input
-                type="number"
-                id="rating"
-                value={rating}
-                onChange={(e) => setRating(Number(e.target.value))}
-                className="w-full px-3 py-2 border rounded"
-                min="1"
-                max="5"
-                required
-              />
-            </div>
-
-            <div className="mb-4">
-              <label
-                className="block text-sm text-yellowish font-bold mb-2"
-                htmlFor="review"
-              >
-                Review
-              </label>
-              <textarea
-                id="review"
-                value={reviewText}
-                onChange={(e) => setReviewText(e.target.value)}
-                className="w-full px-3 py-2 border rounded"
-                rows={4}
-                required
-              />
-            </div>
-
-            <button
-              type="submit"
-              className="w-full bg-tealish text-white py-2 rounded"
-            >
-              Submit Review
-            </button>
-          </form>
-
-          <div className="mt-8">
-            <h3 className="text-2xl text-pinkish font-bold"> All Reviews</h3>
-            {reviews.length === 0 ? (
-              <p>No reviews yet. Be the first to leave a review!</p>
-            ) : (
-              <ul className="mt-4">
-                {reviews.map((review, index) => (
-                  <li key={index} className="bg-transparent p-4 mb-4 rounded">
-                    <p className="font-bold ">
-                      {review.name} (Rating: {review.rating})
-                    </p>
-                    <p>{review.reviewText}</p>
-                  </li>
-                ))}
-              </ul>
-            )}
+          {/* Search Bar */}
+          <div className="flex bg-gray-500 bg-opacity-20 border border-gray-200 rounded-md">
+            <IonIcon className="py-4 p-3" name="search-outline" />
+            <input
+              type="text"
+              placeholder="Search Review"
+              className="p-2 bg-transparent focus:outline-none"
+              value={searchTerm}
+              onChange={(e) => setSerchTerm(e.target.value)}
+            />
           </div>
+          {/* Write a Review Form */}
+          <form action=""></form>
         </div>
       </div>
-    </>
+    </div>
   );
-}
+};
 
-export default Review;
+export default ReviewPage;

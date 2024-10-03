@@ -5,7 +5,7 @@ function Home() {
   return (
     <div>
       <Navbar />
-      <div className="min-h-screen bg-pinkish bg-fullBackground-jpg bg-no-repeat bg-[length:100%_auto]  flex flex-col items-center justify-start pt-[80px]">
+      <div className="min-h-screen w-full bg-pinkish bg-fullBackground-jpg bg-no-repeat bg-cover  flex flex-col items-center justify-start pt-[80px]">
         {/* <ReactCurvedText
           width={500}
           height={290}
